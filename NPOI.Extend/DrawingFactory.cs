@@ -8,6 +8,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using NPOI.XSSF.Util;
 
 namespace NPOI.Extend
 {
@@ -554,7 +555,10 @@ namespace NPOI.Extend
             var ext = Path.GetExtension(path);
             if (string.IsNullOrEmpty(ext) || (!ext.ToLower().Equals(".xls", StringComparison.InvariantCultureIgnoreCase) && !ext.Equals(".xlsx", StringComparison.InvariantCultureIgnoreCase)))
                 throw new FileLoadException("Invalid file extension. The file extension must be .xls or .xlsx", path);
-            Workbook = new HSSFWorkbook(new FileStream(path, FileMode.Open, FileAccess.ReadWrite));
+            if (ext.ToLower().Equals(".xls", StringComparison.InvariantCultureIgnoreCase))
+                Workbook = new HSSFWorkbook(new FileStream(path, FileMode.Open, FileAccess.ReadWrite));
+            else
+                Workbook = new XSSFWorkbook(new FileStream(path, FileMode.Open, FileAccess.ReadWrite));
             UseTemplate = true;
         }
     }
